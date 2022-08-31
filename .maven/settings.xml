@@ -2,8 +2,8 @@
 	<servers>
     <server>
       <id>anypoint-exchange-v2</id>
-      <username>${env.PLATFORM_USERNAME}</username>
-      <password>${env.PLATFORM_PASSWORD}</password>
+      <username>${env.JFROG_USERNAME}</username>
+      <password>${env.JFROG_TOKEN}</password>
     </server>
 	</servers>
 </settings>

@@ -34,8 +34,8 @@
 				<configuration>
 					<cloudHubDeployment>
 						<muleVersion>4.4.0</muleVersion>
-						<username>${env.PLATFORM_USERNAME}</username>
-						<password>${env.PLATFORM_PASSWORD}</password>
+						<username>${env.JFROG_USERNAME}</username>
+						<password>${env.JFROG_TOKEN}</password>
 						<applicationName>cicd-githubactions-apfeb22</applicationName>
 						<environment>Dev</environment>
 						<workers>1</workers>
