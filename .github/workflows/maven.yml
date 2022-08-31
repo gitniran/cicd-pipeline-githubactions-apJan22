@@ -4,15 +4,13 @@ name: Build and Deploy to Sandbox
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ master ]
+  # workflow_dispatch:
     
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-        JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
-        JFROG_TOKEN: ${{ secrets.JFROG_TOKEN }}
+    
     #   PLATFORM_USERNAME: ${{ secrets.PLATFORM_USERNAME }}
     #   PLATFORM_PASSWORD: ${{ secrets.PLATFORM_PASSWORD }}
     #   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -30,7 +28,10 @@ jobs:
         cache: maven
     
     - name: Build with maven
-      run: mvn -B clean package -s .maven/settings.xml
+      run: mvn -B clean package deploy --file pom.xml -s .maven/settings.xml
+      env:
+        JFROG_USERNAME: ${{ secrets.JFROG_USERNAME }}
+        JFROG_TOKEN: ${{ secrets.JFROG_TOKEN }}
     
     # - name: Stamp artifact file name with commit hash
     #   run: |
@@ -40,16 +41,18 @@ jobs:
     #     mv $artifactName1 $artifactName2
     
     - name: Upload artifact 
-      uses: actions/upload-artifact@master
+      uses: actions/upload-artifact@v2
       with:
           name: artifacts
-          path: target/*.jar
+          url: 'https://cloudjfrogserver.jfrog.io/artifactory/manen-libs-snapshot/'
+        
+          # credentials type: 'apikey'
+          # apikey: ${{ secrets.RT_APIKEY }}
+          # args: u "dist/*" "/mu/repo/path/" --recursive=true --build-name=myawesomeapp
+          path: ./dist/manen-libs-snapshot/**
 
-    - name: Upload artifact 
-      uses: actions/upload-artifact@master
-      with:
-          name: artifacts
-          path: target/*.jar
+
+
       
     
   #   - name: Slack Notification
